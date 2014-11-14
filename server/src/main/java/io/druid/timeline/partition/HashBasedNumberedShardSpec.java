@@ -34,7 +34,7 @@ import java.util.List;
 
 public class HashBasedNumberedShardSpec extends NumberedShardSpec
 {
-  private static final HashFunction hashFunction = Hashing.murmur3_32();
+  private static final HashFunction hashFunction = Hashing.murmur3_128();
   private final ObjectMapper jsonMapper;
 
   @JsonCreator
