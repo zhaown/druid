@@ -1677,7 +1677,7 @@ public class TimeseriesQueryRunnerTest
                                                   new FilteredAggregatorFactory(
                                                       new CountAggregatorFactory("filteredAgg"),
                                                       Druids.newSelectorDimFilterBuilder()
-                                                            .dimension(QueryRunnerTestHelper.providerDimension)
+                                                            .dimension(QueryRunnerTestHelper.marketDimension)
                                                             .value("spot")
                                                             .build()
                                                   )
@@ -1689,7 +1689,7 @@ public class TimeseriesQueryRunnerTest
                                   .build();
 
     Iterable<Result<TimeseriesResultValue>> actualResults = Sequences.toList(
-        runner.run(query),
+        runner.run(query, CONTEXT),
         Lists.<Result<TimeseriesResultValue>>newArrayList()
     );
     List<Result<TimeseriesResultValue>> expectedResults = Arrays.asList(
@@ -1736,7 +1736,7 @@ public class TimeseriesQueryRunnerTest
                                   .build();
 
     Iterable<Result<TimeseriesResultValue>> actualResults = Sequences.toList(
-        runner.run(query),
+        runner.run(query, CONTEXT),
         Lists.<Result<TimeseriesResultValue>>newArrayList()
     );
     List<Result<TimeseriesResultValue>> expectedResults = Arrays.asList(
@@ -1771,7 +1771,7 @@ public class TimeseriesQueryRunnerTest
                                                   new FilteredAggregatorFactory(
                                                       new CountAggregatorFactory("filteredAgg"),
                                                       new NotDimFilter(Druids.newSelectorDimFilterBuilder()
-                                                                             .dimension(QueryRunnerTestHelper.providerDimension)
+                                                                             .dimension(QueryRunnerTestHelper.marketDimension)
                                                                              .value("LolLol")
                                                                              .build())
                                                   )
@@ -1783,7 +1783,7 @@ public class TimeseriesQueryRunnerTest
                                   .build();
 
     Iterable<Result<TimeseriesResultValue>> actualResults = Sequences.toList(
-        runner.run(query),
+        runner.run(query, CONTEXT),
         Lists.<Result<TimeseriesResultValue>>newArrayList()
     );
     List<Result<TimeseriesResultValue>> expectedResults = Arrays.asList(
@@ -1818,7 +1818,7 @@ public class TimeseriesQueryRunnerTest
                                                   new FilteredAggregatorFactory(
                                                       new CountAggregatorFactory("filteredAgg"),
                                                       new NotDimFilter(Druids.newSelectorDimFilterBuilder()
-                                                                             .dimension(QueryRunnerTestHelper.providerDimension)
+                                                                             .dimension(QueryRunnerTestHelper.marketDimension)
                                                                              .value(null)
                                                                              .build())
                                                   )
@@ -1830,7 +1830,7 @@ public class TimeseriesQueryRunnerTest
                                   .build();
 
     Iterable<Result<TimeseriesResultValue>> actualResults = Sequences.toList(
-        runner.run(query),
+        runner.run(query, CONTEXT),
         Lists.<Result<TimeseriesResultValue>>newArrayList()
     );
     List<Result<TimeseriesResultValue>> expectedResults = Arrays.asList(
