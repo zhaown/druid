@@ -63,20 +63,14 @@ public class FilteredAggregatorFactory implements AggregatorFactory
     SelectorDimFilter selector = getSelector(filter);
     final DimensionSelector dimensionSelector = metricFactory.makeDimensionSelector(selector.getDimension());
     if (dimensionSelector == null) {
-      // dimension does not exist
-      if (filter instanceof NotDimFilter) {
-        // all rows match the not criteria
-        return aggregator;
-      } else {
-        // none row match the selector filter
         return Aggregators.noopAggregator();
-      }
+    } else {
+      return new FilteredAggregator(
+          dimensionSelector,
+          makeFilterPredicate(filter, dimensionSelector, selector.getValue()),
+          aggregator
+      );
     }
-    return new FilteredAggregator(
-        dimensionSelector,
-        makeFilterPredicate(filter, dimensionSelector, selector.getValue()),
-        aggregator
-    );
   }
 
   @Override
@@ -86,20 +80,14 @@ public class FilteredAggregatorFactory implements AggregatorFactory
     SelectorDimFilter selector = getSelector(filter);
     final DimensionSelector dimensionSelector = metricFactory.makeDimensionSelector(selector.getDimension());
     if (dimensionSelector == null) {
-      // dimension does not exist
-      if (filter instanceof NotDimFilter) {
-        // all rows match the not criteria
-        return aggregator;
-      } else {
-        // none row match the selector filter
         return Aggregators.noopBufferAggregator();
-      }
+    }  else {
+      return new FilteredBufferAggregator(
+          dimensionSelector,
+          makeFilterPredicate(filter, dimensionSelector, selector.getValue()),
+          aggregator
+      );
     }
-    return new FilteredBufferAggregator(
-        dimensionSelector,
-        makeFilterPredicate(filter, dimensionSelector, selector.getValue()),
-        aggregator
-    );
   }
 
   @Override

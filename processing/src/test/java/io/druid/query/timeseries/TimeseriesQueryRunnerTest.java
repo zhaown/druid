@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.metamx.common.guava.Sequences;
 import io.druid.granularity.PeriodGranularity;
 import io.druid.granularity.QueryGranularity;
@@ -1711,7 +1712,8 @@ public class TimeseriesQueryRunnerTest
   }
 
   @Test
-  public void testTimeSeriesWithFilteredAggDimensionNotPresent(){
+  public void testTimeSeriesWithFilteredAggDimensionNotPresent()
+  {
     TimeseriesQuery query = Druids.newTimeseriesQueryBuilder()
                                   .dataSource(QueryRunnerTestHelper.dataSource)
                                   .granularity(QueryRunnerTestHelper.allGran)
@@ -1723,10 +1725,12 @@ public class TimeseriesQueryRunnerTest
                                               Lists.newArrayList(
                                                   new FilteredAggregatorFactory(
                                                       new CountAggregatorFactory("filteredAgg"),
-                                                      new NotDimFilter(Druids.newSelectorDimFilterBuilder()
-                                                                             .dimension("abraKaDabra")
-                                                                             .value("Lol")
-                                                                             .build())
+                                                      new NotDimFilter(
+                                                          Druids.newSelectorDimFilterBuilder()
+                                                                .dimension("abraKaDabra")
+                                                                .value("Lol")
+                                                                .build()
+                                                      )
                                                   )
                                               )
                                           )
@@ -1739,17 +1743,19 @@ public class TimeseriesQueryRunnerTest
         runner.run(query, CONTEXT),
         Lists.<Result<TimeseriesResultValue>>newArrayList()
     );
+    Map<String, Object> resMap = Maps.newHashMap();
+    resMap.put("filteredAgg", null);
+    resMap.put("addRowsIndexConstant", 12486.361190795898d);
+    resMap.put("index", 12459.361190795898d);
+    resMap.put("uniques", 9.019833517963864d);
+
+    resMap.put("rows", 26L);
+
     List<Result<TimeseriesResultValue>> expectedResults = Arrays.asList(
         new Result<TimeseriesResultValue>(
             new DateTime("2011-04-01"),
             new TimeseriesResultValue(
-                ImmutableMap.<String, Object>of(
-                    "filteredAgg", 26L,
-                    "addRowsIndexConstant", 12486.361190795898d,
-                    "index", 12459.361190795898d,
-                    "uniques", 9.019833517963864d,
-                    "rows", 26L
-                )
+                resMap
             )
         )
     );

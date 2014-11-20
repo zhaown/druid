@@ -843,7 +843,7 @@ public class IncrementalIndex implements Iterable<Row>, Closeable
     public int getId(String value)
     {
       if (value == null) {
-        return -1;
+        value = "";
       }
       final Integer id = falseIds.get(value);
       return id == null ? -1 : id;
